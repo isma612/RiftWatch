@@ -3,7 +3,8 @@ import { Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { RiftboundSet } from "@/features/cards/services/riftcodex.service";
 
-const SET_ORDER = ["OGN", "SFD", "UNL", "OGS", "OPP", "JDG", "PR"];
+// Orden cronológico por set_id (código corto)
+const SET_ORDER = ["OGN", "OGS", "SFD", "UNL", "OPP", "JDG", "PR"];
 
 function getSetOrdinal(setId: string) {
   const idx = SET_ORDER.indexOf(setId.toUpperCase());
@@ -16,7 +17,7 @@ interface SetsGridProps {
 
 export function SetsGrid({ sets }: SetsGridProps) {
   const sorted = [...sets].sort(
-    (a, b) => getSetOrdinal(a.id) - getSetOrdinal(b.id)
+    (a, b) => getSetOrdinal(a.set_id) - getSetOrdinal(b.set_id)
   );
 
   return (
@@ -32,7 +33,7 @@ function SetCard({ set }: { set: RiftboundSet }) {
   return (
     <Link
       href={`/sets/${set.id}`}
-      title={set.label}
+      title={set.name}
       className={cn(
         "group flex h-24 flex-col overflow-hidden rounded-2xl border border-border/60 bg-card p-3",
         "transition-all duration-200 hover:border-border hover:bg-card/80 hover:shadow-sm"
@@ -42,10 +43,10 @@ function SetCard({ set }: { set: RiftboundSet }) {
         <Layers className="h-4 w-4 text-primary" />
       </div>
       <p className="line-clamp-2 text-xs font-semibold leading-tight">
-        {set.label}
+        {set.name}
       </p>
       <p className="mt-auto text-[10px] text-muted-foreground">
-        {set.id.toUpperCase()}
+        {set.set_id.toUpperCase()}
         {set.card_count ? ` · ${set.card_count} cartas` : ""}
       </p>
     </Link>

@@ -14,7 +14,7 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { setId } = await params;
   const set = await getSetById(setId);
-  return { title: set?.label ?? setId.toUpperCase() };
+  return { title: set?.name ?? setId.toUpperCase() };
 }
 
 async function SetContent({ setId }: { setId: string }) {
@@ -25,7 +25,7 @@ async function SetContent({ setId }: { setId: string }) {
 
   if (!set && cards.length === 0) notFound();
 
-  const label = set?.label ?? setId.toUpperCase();
+  const label = set?.name ?? setId.toUpperCase();
 
   return <SetFilters cards={cards} setLabel={label} />;
 }
@@ -33,7 +33,7 @@ async function SetContent({ setId }: { setId: string }) {
 export default async function SetDetailPage({ params }: Props) {
   const { setId } = await params;
   const set = await getSetById(setId);
-  const label = set?.label ?? setId.toUpperCase();
+  const label = set?.name ?? setId.toUpperCase();
 
   return (
     <>

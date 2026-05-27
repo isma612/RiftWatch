@@ -41,12 +41,12 @@ export interface RiftboundCard {
 }
 
 export interface RiftboundSet {
-  id: string;
-  label: string;
-  set_type?: string;
+  id: string;        // MongoDB ObjectID — usado en URLs
+  set_id: string;    // Código corto: "OGN", "SFD", etc.
+  name: string;
   card_count?: number;
-  symbol_url?: string;
-  released_at?: string;
+  tcgplayer_id?: string;
+  published_on?: string;
 }
 
 interface PaginatedResponse<T> {
@@ -148,7 +148,8 @@ export async function getAllSets(): Promise<RiftboundSet[]> {
     );
     if (Array.isArray(data)) return data;
     return data.items ?? [];
-  } catch {
+  } catch (err) {
+    console.error("[RiftCodex] getAllSets failed:", err);
     return [];
   }
 }
@@ -158,7 +159,8 @@ export async function getSetById(setId: string): Promise<RiftboundSet | null> {
     return await apiFetch<RiftboundSet>(`/sets/${setId}`, {
       next: { revalidate: 86400 },
     });
-  } catch {
+  } catch (err) {
+    console.error(`[RiftCodex] getSetById(${setId}) failed:`, err);
     return null;
   }
 }
