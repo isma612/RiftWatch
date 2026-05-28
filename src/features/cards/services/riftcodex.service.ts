@@ -59,15 +59,21 @@ interface PaginatedResponse<T> {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
+const BROWSER_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+  "Accept": "application/json, text/plain, */*",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Accept-Encoding": "gzip, deflate, br",
+  "Referer": "https://riftcodex.com/",
+  "Origin": "https://riftcodex.com",
+};
+
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
     headers: {
-      "Content-Type": "application/json",
-      // User-Agent de navegador para evitar el bloqueo de Cloudflare Bot Protection
-      // en entornos serverless (Vercel) donde Node.js no envía User-Agent por defecto
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+      ...BROWSER_HEADERS,
       ...init?.headers,
     },
   });
