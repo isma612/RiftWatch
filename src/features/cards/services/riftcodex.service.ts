@@ -1,4 +1,10 @@
-const BASE = "https://api.riftcodex.com";
+// En Vercel, las IPs de serverless están bloqueadas por Cloudflare Bot Protection.
+// Usamos un proxy Edge (/api/riftcodex/*) que sí tiene acceso, ya que corre en
+// los nodos de borde de Cloudflare. En desarrollo local se llama directamente.
+const BASE =
+  process.env.VERCEL === "1"
+    ? `https://${process.env.VERCEL_URL}/api/riftcodex`
+    : "https://api.riftcodex.com";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
