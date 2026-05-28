@@ -62,7 +62,14 @@ interface PaginatedResponse<T> {
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
+    headers: {
+      "Content-Type": "application/json",
+      // User-Agent de navegador para evitar el bloqueo de Cloudflare Bot Protection
+      // en entornos serverless (Vercel) donde Node.js no envía User-Agent por defecto
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+      ...init?.headers,
+    },
   });
   if (!res.ok) {
     throw new Error(`RiftCodex API error ${res.status}: ${path}`);
